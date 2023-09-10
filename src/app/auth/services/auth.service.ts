@@ -36,10 +36,16 @@ export class AuthService {
 
     return this.http.post<LoginResponseInterface>(url, body).pipe(
       map( ({user, token}) => this.setAuthentication(user, token) ),
-      //TODO: Handle errors
       catchError( err => throwError(() => err.error.message) )
     );
+  }
 
+  register(name: string, email: string, password: string): Observable<boolean> {
+    const url = `${this.baseUrl}/auth/register`;
+    const body = {name, email, password};
+    return this.http.post<LoginResponseInterface>(url, body).pipe(
+      map( ({user, token}) => this.setAuthentication(user, token) ),
+    );
   }
 
   checkAuthStatus(): Observable<boolean> {
